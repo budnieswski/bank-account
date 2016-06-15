@@ -16,7 +16,7 @@ public class ConnectionFactory {
     private static InputStream inputStream;
     private static Connection con;
     
-    public static Connection getConnection2() {
+    public static Connection getConnection() {
                 
         try {
             Properties prop = new Properties();
@@ -54,7 +54,7 @@ public class ConnectionFactory {
         return con;
     }
     
-    public static Connection getConnection() {
+    public static Connection getConnectionSample() {
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost/bankaccount", "root", "");
         } catch (SQLException e) {

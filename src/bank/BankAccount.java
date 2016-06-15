@@ -5,7 +5,7 @@ import java.sql.Connection;
 
 /**
  *
- * @author Budnieswski
+ * @author Guilherme
  */
 public class BankAccount {
 
