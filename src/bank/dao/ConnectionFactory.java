@@ -13,7 +13,6 @@ import java.util.Properties;
  * @author Guilherme
  */
 public class ConnectionFactory {
-    private static InputStream inputStream;
     private static Connection con;
     
     public static Connection getConnection() {
@@ -32,8 +31,6 @@ public class ConnectionFactory {
             
             String url = "jdbc:mysql://"+prop.getProperty("host");
                    url+= "/"+prop.getProperty("db");
-                   
-            //Class.forName("com.mysql.jdbc.Driver");
             
             con = DriverManager.getConnection(url,
                     prop.getProperty("user"),
@@ -43,13 +40,7 @@ public class ConnectionFactory {
  
 	} catch (Exception e) {
             System.out.println("Exception: " + e);
-	} finally {
-            try {
-                inputStream.close();
-            } catch (Exception e) {
-                System.out.println("Exception (close file): " + e);
-            }
-	} 
+	}
             
         return con;
     }
