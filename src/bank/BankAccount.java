@@ -1,5 +1,8 @@
 package bank;
 
+import bank.dao.ConnectionFactory;
+import java.sql.Connection;
+
 /**
  *
  * @author Budnieswski
@@ -7,7 +10,7 @@ package bank;
 public class BankAccount {
 
     public static void main(String[] args) {
-        // TODO code application logic here
+        Connection con = ConnectionFactory.getConnection();
     }
     
 }
