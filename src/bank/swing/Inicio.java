@@ -88,6 +88,11 @@ public class Inicio extends javax.swing.JFrame {
         });
 
         btnInserir.setText("Inserir");
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnFiltrar.setText("FIltrar");
 
@@ -176,11 +181,17 @@ public class Inicio extends javax.swing.JFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         if(linhaClicada!=-1){
             Cliente cliente = modeloTabela.getCliente(linhaClicada);
-            ClienteEditar telaEditar = new ClienteEditar(cliente);
+            ClienteFrame telaEditar = new ClienteFrame(cliente);
             telaEditar.setVisible(true);
             dispose();
         }
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        ClienteFrame tela = new ClienteFrame();
+        tela.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnInserirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;

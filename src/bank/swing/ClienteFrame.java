@@ -9,18 +9,22 @@ import javax.swing.JTextField;
  *
  * @author Guilherme
  */
-public class ClienteEditar extends javax.swing.JFrame {
+public class ClienteFrame extends javax.swing.JFrame {
 
     private Cliente cliente;
     
     /**
-     * Creates new form ClienteCadastro
+     * Creates new form ClienteFrame
      */
-    public ClienteEditar() {
+    public ClienteFrame() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+        
+        
     }
     
-    public ClienteEditar(Cliente cliente) {
+    public ClienteFrame(Cliente cliente) {
         initComponents();
         
         this.setLocationRelativeTo(null);
@@ -33,9 +37,41 @@ public class ClienteEditar extends javax.swing.JFrame {
             fieldEndereco.setText(cliente.getEndereco());
             fieldCPF.setText(cliente.getCPF());
             fieldRG.setText(cliente.getRG());
-        }       
+            
+            // Faz um 'polimorfismo' do botão
+            // Evita criar 2 telas para basicamente a mesma função 'cadast/edit'
+            btnSalvar.setText("Atualizar");
+            btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtualizarActionPerformed(evt);
+            }
+        });
+            
+        }
+    }
+    
+    private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        ClienteDAO dao = null;
         
+        System.out.println("Antes: "+ cliente.getNome());
         
+        // Atualizando os dados no objeto
+        this.cliente.setNome(fieldNome.getText());
+        this.cliente.setSobrenome(fieldSobrenome.getText() );
+        this.cliente.setEndereco(fieldEndereco.getText() );
+        this.cliente.setCPF(fieldCPF.getText() );
+        this.cliente.setRG(fieldRG.getText() );
+        
+        System.out.println("Depois: "+ cliente.getNome());
+        
+        // Atualizando com o banco
+        try {
+            dao = new ClienteDAO();
+            dao.atualizar(this.cliente);
+            JOptionPane.showMessageDialog(null,"Cliente atualizado !", "Sucesso", JOptionPane.OK_OPTION);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao atualizar no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
 
@@ -77,7 +113,7 @@ public class ClienteEditar extends javax.swing.JFrame {
 
         txtRG.setText("RG:");
 
-        btnSalvar.setText("Atualizar");
+        btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -97,13 +133,13 @@ public class ClienteEditar extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(txtNome)
                         .addGap(18, 18, 18)
                         .addComponent(fieldNome))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtEndereco)
                             .addComponent(txtSobrenome)
@@ -118,7 +154,7 @@ public class ClienteEditar extends javax.swing.JFrame {
                                 .addComponent(txtRG)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(fieldRG, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnFechar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalvar)))
@@ -151,7 +187,7 @@ public class ClienteEditar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSalvar)
                     .addComponent(btnFechar))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -168,33 +204,31 @@ public class ClienteEditar extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        ClienteDAO dao = null;
-        
-        System.out.println("Antes: "+ cliente.getNome());
-        
-        // Atualizando os dados no objeto
-        this.cliente.setNome(fieldNome.getText());
-        this.cliente.setSobrenome(fieldSobrenome.getText() );
-        this.cliente.setEndereco(fieldEndereco.getText() );
-        this.cliente.setCPF(fieldCPF.getText() );
-        this.cliente.setRG(fieldRG.getText() );
-        
-        System.out.println("Depois: "+ cliente.getNome());
-        
-        // Atualizando com o banco
-        try {
-            dao = new ClienteDAO();
-            dao.atualizar(this.cliente);
-            JOptionPane.showMessageDialog(null,"Cliente atualizado !", "Sucesso", JOptionPane.OK_OPTION);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,"Erro ao atualizar no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        // Previne ação duplicada, por conta do polimorfismo do botão
+        if (this.cliente == null) {
+            ClienteDAO dao = null;
+            Cliente cliente = new Cliente();
+            
+            cliente.setNome(fieldNome.getText());
+            cliente.setSobrenome(fieldSobrenome.getText() );
+            cliente.setEndereco(fieldEndereco.getText() );
+            cliente.setCPF(fieldCPF.getText() );
+            cliente.setRG(fieldRG.getText() );
+
+            try {
+                dao = new ClienteDAO();
+                dao.adicionar(cliente);
+                JOptionPane.showMessageDialog(null,"Cliente cadastrado !", "Sucesso", JOptionPane.OK_OPTION);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,"Erro ao atualizar no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
