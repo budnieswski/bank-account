@@ -55,6 +55,7 @@ public class Inicio extends javax.swing.JFrame {
         btnInserir = new javax.swing.JButton();
         btnFiltrar = new javax.swing.JButton();
         fieldFiltrar = new javax.swing.JTextField();
+        btnCriarConta = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -96,6 +97,14 @@ public class Inicio extends javax.swing.JFrame {
 
         btnFiltrar.setText("FIltrar");
 
+        btnCriarConta.setText("Criar Conta");
+        btnCriarConta.setEnabled(false);
+        btnCriarConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCriarContaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,8 +115,10 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(scrollPanel)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnExcluir)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCriarConta)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInserir)
@@ -130,7 +141,8 @@ public class Inicio extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
-                    .addComponent(btnExcluir))
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCriarConta))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -149,6 +161,7 @@ public class Inicio extends javax.swing.JFrame {
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         btnEditar.setEnabled(true);
         btnExcluir.setEnabled(true);
+        btnCriarConta.setEnabled(true);
        
         linhaClicada = tabela.rowAtPoint(evt.getPoint());
         //Pega o contato da linha clidada
@@ -193,7 +206,14 @@ public class Inicio extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnInserirActionPerformed
 
+    private void btnCriarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarContaActionPerformed
+        CriarConta tela = new CriarConta();
+        tela.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnCriarContaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCriarConta;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFiltrar;

@@ -16,15 +16,6 @@ public class Cliente {
     public Cliente() {
         this.id = -1L;
     }
-
-    public Cliente(Long id, String nome, String sobrenome, String RG, String CPF, String endereco) {
-        this.id = id;
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.RG = RG;
-        this.CPF = CPF;
-        this.endereco = endereco;
-    }
     
     public Long getId() {
         return id;
