@@ -20,6 +20,7 @@ public class ManipularFrame extends javax.swing.JFrame {
     
     private Cliente cliente;
     private Conta conta;
+    private ContaDAO contaDAO;
 
     /**
      * Creates new form ManipularFrame
@@ -29,8 +30,8 @@ public class ManipularFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         this.cliente = cliente;
-        ContaDAO dao = new ContaDAO();
-        this.conta = dao.getConta(cliente);
+        this.contaDAO = new ContaDAO();
+        this.conta = this.contaDAO.getConta(cliente);
         
         this.txtSaldo.setText(conta.getSaldo() + "");
         
@@ -84,6 +85,11 @@ public class ManipularFrame extends javax.swing.JFrame {
         txtValor.setText("Valor:");
 
         btnExecutar.setText("Executar");
+        btnExecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExecutarActionPerformed(evt);
+            }
+        });
 
         txtViewSaldo.setText("Saldo: ");
 
@@ -95,24 +101,23 @@ public class ManipularFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnExecutar)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnFechar)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtAcao)
-                                .addGap(18, 18, 18)
-                                .addComponent(fieldAcao, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtValor)
-                                .addGap(18, 18, 18)
-                                .addComponent(fieldValor))
-                            .addComponent(jSeparator1)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtViewSaldo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSaldo)))
+                        .addComponent(txtSaldo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtAcao)
+                        .addGap(18, 18, 18)
+                        .addComponent(fieldAcao, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnExecutar)
+                        .addComponent(btnFechar, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(txtValor)
+                            .addGap(18, 18, 18)
+                            .addComponent(fieldValor))
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -159,8 +164,42 @@ public class ManipularFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void fieldAcaoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fieldAcaoItemStateChanged
-        //
+        fieldValor.setEnabled(true);
+        
+        if (fieldAcao.getSelectedIndex()==0) {
+            // Sacar
+        }
+        else if (fieldAcao.getSelectedIndex()==1) {
+            // Depositar
+        }
+        else if (fieldAcao.getSelectedIndex()==2) {
+            // Remuneracao
+            fieldValor.setEnabled(false);
+        }
     }//GEN-LAST:event_fieldAcaoItemStateChanged
+
+    private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecutarActionPerformed
+
+        if (fieldAcao.getSelectedIndex()==0) {
+            // Sacar
+        }
+        else if (fieldAcao.getSelectedIndex()==1) {
+            // Depositar
+        }
+        else if (fieldAcao.getSelectedIndex()==2) {
+            // Remuneracao
+            System.out.println("--------------------------");
+            System.out.println("Remuneracao");
+            System.out.println("Antes: " + this.conta.getSaldo());
+            
+            this.conta.remunera();
+            this.contaDAO.atualizar(this.conta);
+            this.txtSaldo.setText( this.conta.getSaldo() + "" );
+            
+            System.out.println("Depois: " + this.conta.getSaldo());
+            System.out.println("--------------------------");
+        }
+    }//GEN-LAST:event_btnExecutarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExecutar;
