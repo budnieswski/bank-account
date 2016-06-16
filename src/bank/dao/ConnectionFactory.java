@@ -45,12 +45,12 @@ public class ConnectionFactory {
         return con;
     }
     
-    public static Connection getConnectionSample() {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://localhost/bankaccount", "root", "");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static Connection getConnectionSample() {
+//        try {
+//            return DriverManager.getConnection("jdbc:mysql://localhost/bankaccount", "root", "");
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
 
