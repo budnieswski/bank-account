@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  *
  * @author Guilherme
  */
-public class CriarConta extends javax.swing.JFrame {
+public class ContaFrame extends javax.swing.JFrame {
     
     private Cliente cliente;
     private Conta conta = null;
@@ -27,7 +27,7 @@ public class CriarConta extends javax.swing.JFrame {
     /**
      * Creates new form CriarConta
      */
-    public CriarConta(Cliente cliente) {
+    public ContaFrame(Cliente cliente) {
         initComponents();
         this.setLocationRelativeTo(null);
         
