@@ -5,23 +5,21 @@ package bank.model;
  * @author Bruno e Guilherme
  */
 public class Cliente {
-    private Long id;
+    private int id;
     private String nome;
     private String sobrenome;
     private String RG;
     private String CPF;
     private String endereco;
-    private int idConta;
     
     public Cliente() {
-        this.id = -1L;
     }
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -63,14 +61,5 @@ public class Cliente {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
-    }
-
-    public int getIdConta() {
-        return idConta;
-    }
-
-    public void setIdConta(int idConta) {
-        this.idConta = idConta;
-    }
-    
+    }    
 }

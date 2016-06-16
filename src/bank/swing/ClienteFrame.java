@@ -113,7 +113,6 @@ public class ClienteFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Editar Cliente");
         setResizable(false);
-        setType(java.awt.Window.Type.POPUP);
 
         txtNome.setText("Nome:");
 

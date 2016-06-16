@@ -207,7 +207,8 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnCriarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarContaActionPerformed
-        CriarConta tela = new CriarConta();
+        Cliente cliente = modeloTabela.getCliente(linhaClicada);
+        CriarConta tela = new CriarConta(cliente);
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCriarContaActionPerformed

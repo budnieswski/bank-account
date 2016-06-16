@@ -5,23 +5,26 @@ package bank.model;
  * @author Bruno e Guilherme
  */
 public abstract class Conta implements ContaInterface {
-    private Long id;
+    protected Cliente dono;
+    private int id;
     private int idTipo;
-    private String nomeTipo;
     protected double saldo;
+    
+    public Conta() {
+    }
 
-    public Conta(Long id, int idTipo, String nomeTipo, double saldo) {
+    public Conta(Cliente dono, int id, int idTipo, double saldo) {
+        this.dono = dono;
         this.id = id;
         this.idTipo = idTipo;
-        this.nomeTipo = nomeTipo;
         this.saldo = saldo;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -31,14 +34,6 @@ public abstract class Conta implements ContaInterface {
 
     public void setIdTipo(int idTipo) {
         this.idTipo = idTipo;
-    }
-
-    public String getNomeTipo() {
-        return nomeTipo;
-    }
-
-    public void setNomeTipo(String nomeTipo) {
-        this.nomeTipo = nomeTipo;
     }
 
     @Override
@@ -74,13 +69,11 @@ public abstract class Conta implements ContaInterface {
 
     @Override
     public Cliente getDono() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.dono;
     }
 
     @Override
     public int getNumero() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.id;
     }
-    
-    
 }

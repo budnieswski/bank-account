@@ -6,19 +6,28 @@
 package bank.swing;
 
 import bank.dao.ContaDAO;
+import bank.model.Cliente;
+import bank.model.Conta;
+import bank.model.ContaCorrente;
+import bank.model.ContaInvestimento;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Guilherme
  */
 public class CriarConta extends javax.swing.JFrame {
+    
+    private Cliente cliente;
 
     /**
      * Creates new form CriarConta
      */
-    public CriarConta() {
+    public CriarConta(Cliente cliente) {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        this.cliente = cliente;
     }
 
     /**
@@ -61,8 +70,6 @@ public class CriarConta extends javax.swing.JFrame {
 
         txtComum2.setText("Montante Minimo");
 
-        fieldComum2.setEnabled(false);
-
         btnFechar.setText("Fechar");
         btnFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,6 +78,11 @@ public class CriarConta extends javax.swing.JFrame {
         });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -82,7 +94,7 @@ public class CriarConta extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(btnFechar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnSalvar))
                         .addComponent(fieldComum2)
                         .addComponent(fieldComum1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,12 +155,16 @@ public class CriarConta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldTipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fieldTipoItemStateChanged
+        
         if (fieldTipo.getSelectedIndex()==0) {
+            // Conta Investimento - DB id 2
             txtComum1.setText("Depósito Minimo:");
             txtComum2.setText("Montante Minimo:");
             fieldComum2.setEnabled(true);
+            fieldComum2.setText("");
         }
         else if (fieldTipo.getSelectedIndex()==1) {
+            // Conta Corrente - DB id 1
             ContaDAO dao = new ContaDAO();
             
             txtComum1.setText("Limite:");
@@ -162,6 +178,44 @@ public class CriarConta extends javax.swing.JFrame {
         new Inicio();
         dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        ContaDAO dao;
+        Conta conta = null;
+        
+        try {
+            dao = new ContaDAO();
+            
+            switch (fieldTipo.getSelectedIndex()) {
+                case 0:
+                    conta = new ContaInvestimento(
+                        Double.parseDouble(fieldComum2.getText()), // Montante
+                        Double.parseDouble(fieldComum1.getText()), // Deposito Min
+                        this.cliente,
+                        dao.getNextContaId(), // id/numero
+                        2, // idTipo
+                        Double.parseDouble(fieldDepositoInicial.getText()) // Saldo
+                    );
+                break;
+                case 1:
+                    conta = new ContaCorrente(
+                        Double.parseDouble(fieldComum1.getText()), // Limite
+                        this.cliente,
+                        Integer.parseInt(fieldComum2.getText()), // id/numero
+                        1, // idTipo
+                        Double.parseDouble(fieldDepositoInicial.getText()) // Saldo
+                    );                    
+                break;
+            }
+            
+            dao.adicionar(conta);
+            
+            JOptionPane.showMessageDialog(null,"Conta criada!", "Sucesso", JOptionPane.OK_OPTION);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao criar conta no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;

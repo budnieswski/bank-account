@@ -59,7 +59,7 @@ public class ModeloTabelaContatos extends AbstractTableModel{
             Cliente customer = lista.get(row);
             switch (col) {
                 case 0:
-                    customer.setId((Long) value); //if column 0 (code)
+                    customer.setId((int) value); //if column 0 (code)
                     break;
                 case 1:
                     customer.setNome((String) value);

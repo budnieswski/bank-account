@@ -4,11 +4,14 @@ package bank.model;
  *
  * @author Bruno e Guilherme
  */
-public class ContaCorrente extends Conta{
+public class ContaCorrente extends Conta {
     private double limite;
+    
+    public ContaCorrente() {
+    }
 
-    public ContaCorrente(double limite, Long id, int idTipo, String nomeTipo, double saldo) {
-        super(id, idTipo, nomeTipo, saldo);
+    public ContaCorrente(double limite, Cliente dono, int id, int idTipo, double saldo) {
+        super(dono, id, idTipo, saldo);
         this.limite = limite;
     }
 

@@ -4,15 +4,19 @@ package bank.model;
  *
  * @author Bruno e Guilherme
  */
-public class ContaInvestimento extends Conta{
+public class ContaInvestimento extends Conta {
     private double montanteMinimo;
     private double depositoMinimo;
+    
+    public ContaInvestimento() {
+    }
 
-    public ContaInvestimento(double montanteMinimo, double depositoMinimo, Long id, int idTipo, String nomeTipo, double saldo) {
-        super(id, idTipo, nomeTipo, saldo);
+    public ContaInvestimento(double montanteMinimo, double depositoMinimo, Cliente dono, int id, int idTipo, double saldo) {
+        super(dono, id, idTipo, saldo);
         this.montanteMinimo = montanteMinimo;
         this.depositoMinimo = depositoMinimo;
     }
+    
 
     public double getMontanteMinimo() {
         return montanteMinimo;

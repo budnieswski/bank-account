@@ -38,7 +38,7 @@ public class ClienteDAO {
             // Seta com o ID gerado 
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
-            long i = rs.getLong(1);
+            int i = rs.getInt(1);
             cliente.setId(i);
             
         } catch (SQLException e) {
@@ -102,7 +102,7 @@ public class ClienteDAO {
             
             while (rs.next()) {
                 Cliente cliente = new Cliente();                
-                cliente.setId(rs.getLong("id"));
+                cliente.setId(rs.getInt("id"));
                 cliente.setNome(rs.getString("nome"));
                 cliente.setSobrenome(rs.getString("sobrenome"));
                 cliente.setRG(rs.getString("rg"));
