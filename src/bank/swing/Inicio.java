@@ -8,7 +8,7 @@ package bank.swing;
 
 import bank.dao.ClienteDAO;
 import bank.model.Cliente;
-import bank.model.ModeloTabelaContatos;
+import bank.model.TabelaClientes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,17 +25,19 @@ public class Inicio extends javax.swing.JFrame {
     /**
      * Creates new form Inicio
      */
-     private ModeloTabelaContatos modeloTabela;
+     private TabelaClientes tabelaClientes;
      private int linhaClicada=-1;
     
     public Inicio() {
-        this.modeloTabela = new ModeloTabelaContatos();
+        this.tabelaClientes = new TabelaClientes();
         
         initComponents();        
         
         this.listar();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        
+        this.tabela.setAutoCreateRowSorter(true);
     }
 
     /**
@@ -65,7 +67,7 @@ public class Inicio extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(550, 450));
         setResizable(false);
 
-        tabela.setModel(modeloTabela);
+        tabela.setModel(tabelaClientes);
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
@@ -169,7 +171,7 @@ public class Inicio extends javax.swing.JFrame {
     public void listar() {
         try {
             ClienteDAO dao = new ClienteDAO();
-            modeloTabela.setListaClientes(dao.listar());
+            tabelaClientes.setListaClientes(dao.listar());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Erro ao conectar com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -177,7 +179,7 @@ public class Inicio extends javax.swing.JFrame {
     
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         linhaClicada = tabela.rowAtPoint(evt.getPoint());
-        Cliente cliente = modeloTabela.getCliente(linhaClicada);
+        Cliente cliente = tabelaClientes.getCliente(linhaClicada);
         
         btnEditar.setEnabled(true);
         btnExcluir.setEnabled(true);
@@ -204,12 +206,12 @@ public class Inicio extends javax.swing.JFrame {
                 int[] linhasSelecionadas = tabela.getSelectedRows();
                 List<Cliente> listaExcluir = new ArrayList();
                 for (int i = 0; i < linhasSelecionadas.length; i++) {
-                    Cliente cliente = modeloTabela.getCliente(linhasSelecionadas[i]);
+                    Cliente cliente = tabelaClientes.getCliente(linhasSelecionadas[i]);
                     dao.excluir(cliente);
                     listaExcluir.add(cliente);
                 }
                 for(Cliente cliente:listaExcluir){
-                    modeloTabela.removerCliente(cliente);
+                    tabelaClientes.removerCliente(cliente);
                 }
 
             } catch (Exception ex) {
@@ -220,7 +222,7 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         if(linhaClicada!=-1){
-            Cliente cliente = modeloTabela.getCliente(linhaClicada);
+            Cliente cliente = tabelaClientes.getCliente(linhaClicada);
             ClienteFrame telaEditar = new ClienteFrame(cliente);
             telaEditar.setVisible(true);
             dispose();
@@ -234,14 +236,14 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnCriarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarContaActionPerformed
-        Cliente cliente = modeloTabela.getCliente(linhaClicada);
+        Cliente cliente = tabelaClientes.getCliente(linhaClicada);
         CriarConta tela = new CriarConta(cliente);
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCriarContaActionPerformed
 
     private void btnManipularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManipularActionPerformed
-        Cliente cliente = modeloTabela.getCliente(linhaClicada);
+        Cliente cliente = tabelaClientes.getCliente(linhaClicada);
         ManipularFrame tela = new ManipularFrame(cliente);
         tela.setVisible(true);
         dispose();
@@ -251,9 +253,9 @@ public class Inicio extends javax.swing.JFrame {
         try {
             ClienteDAO dao = new ClienteDAO();
             if (fieldFiltrar.getText().equals(""))
-                modeloTabela.setListaClientes(dao.listar());
+                tabelaClientes.setListaClientes(dao.listar());
             else
-                modeloTabela.setListaClientes( dao.filtrar( fieldFiltrar.getText() ) );
+                tabelaClientes.setListaClientes( dao.filtrar( fieldFiltrar.getText() ) );
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Erro ao filtrar. E:"+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
