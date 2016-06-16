@@ -21,6 +21,8 @@ import javax.swing.JOptionPane;
 public class CriarConta extends javax.swing.JFrame {
     
     private Cliente cliente;
+    private Conta conta = null;
+    private ContaDAO contaDAO;
 
     /**
      * Creates new form CriarConta
@@ -30,6 +32,13 @@ public class CriarConta extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         this.cliente = cliente;
+        this.contaDAO = new ContaDAO();
+        
+        if (this.cliente.getIdConta() != 0) {
+            this.conta = this.contaDAO.getConta(cliente);
+            
+            this.viewCheckConta( this.conta.getIdTipo() );
+       }
         
         this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
@@ -38,7 +47,56 @@ public class CriarConta extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void viewChangeContaCorrente() {
+        // DB id 1
+        txtComum1.setText("Limite:");
+        txtComum2.setText("Numero:");
+        fieldComum2.setEnabled(false); 
+        fieldComum2.setText( this.contaDAO.getNextContaId() + "" );
+    }
+    
+    public void viewChangeContaInvestimento() {
+        // DB id 2
+        txtComum1.setText("Depósito Minimo:");
+        txtComum2.setText("Montante Minimo:");
+        fieldComum2.setEnabled(true);
+        fieldComum2.setText("");
+    }
 
+    public void viewCheckConta(int tipo) {
+        switch (tipo) {
+                case 1:
+                    viewChangeContaCorrente();
+                break;
+                case 2:
+                    viewChangeContaInvestimento();
+                break;
+        }
+        
+        if (this.conta != null) {        
+            this.fieldDepositoInicial.setEnabled(false);
+            
+//            switch (tipo) {
+//                case 1:
+//                    // Conta Corrente
+//                    ContaCorrente CC = (ContaCorrente) this.conta;
+//                    
+//                    //this.fieldTipo.setSelectedIndex(1);
+//                    this.fieldComum1.setText(CC.getLimite() + "");         
+//                    this.fieldComum2.setText( this.conta.getId() + "" );
+//                break;
+//                case 2:      
+//                    // Conta Investimento
+//                    ContaInvestimento CI = (ContaInvestimento) this.conta;
+//                    
+//                    //this.fieldTipo.setSelectedIndex(0);
+//                    this.fieldComum1.setText( CI.getDepositoMinimo() + "");
+//                    this.fieldComum2.setText( CI.getMontanteMinimo() + "");                    
+//                break;
+//            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,23 +222,15 @@ public class CriarConta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldTipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fieldTipoItemStateChanged
-        
         if (fieldTipo.getSelectedIndex()==0) {
-            // Conta Investimento - DB id 2
-            txtComum1.setText("Depósito Minimo:");
-            txtComum2.setText("Montante Minimo:");
-            fieldComum2.setEnabled(true);
-            fieldComum2.setText("");
+            //viewChangeContaInvestimento();
+            viewCheckConta(2);
         }
-        else if (fieldTipo.getSelectedIndex()==1) {
-            // Conta Corrente - DB id 1
-            ContaDAO dao = new ContaDAO();
-            
-            txtComum1.setText("Limite:");
-            txtComum2.setText("Numero:");
-            fieldComum2.setEnabled(false);            
-            fieldComum2.setText( dao.getNextContaId() + "" );
-        }
+        else if (fieldTipo.getSelectedIndex()==1)    
+            viewCheckConta(1);
+            //viewChangeContaCorrente();
+        
+        
     }//GEN-LAST:event_fieldTipoItemStateChanged
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -189,19 +239,21 @@ public class CriarConta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        ContaDAO dao;
-        Conta conta = null;
         
-        try {
-            dao = new ContaDAO();
-            
+        int idNumero = this.contaDAO.getNextContaId(); // Mesma valor se for pegar do field
+        
+        // Conta do cliente já existe
+        if (this.conta != null)
+            idNumero = this.conta.getId();
+        
+        try {            
             switch (fieldTipo.getSelectedIndex()) {
                 case 0:
                     conta = new ContaInvestimento(
                         Double.parseDouble(fieldComum2.getText()), // Montante
                         Double.parseDouble(fieldComum1.getText()), // Deposito Min
                         this.cliente,
-                        dao.getNextContaId(), // id/numero
+                        idNumero, // id/numero
                         2, // idTipo
                         Double.parseDouble(fieldDepositoInicial.getText()) // Saldo
                     );
@@ -210,14 +262,14 @@ public class CriarConta extends javax.swing.JFrame {
                     conta = new ContaCorrente(
                         Double.parseDouble(fieldComum1.getText()), // Limite
                         this.cliente,
-                        Integer.parseInt(fieldComum2.getText()), // id/numero
+                        idNumero, // id/numero
                         1, // idTipo
                         Double.parseDouble(fieldDepositoInicial.getText()) // Saldo
                     );                    
                 break;
             }
             
-            dao.adicionar(conta);
+            this.contaDAO.adicionar(conta);
             
             JOptionPane.showMessageDialog(null,"Conta criada!", "Sucesso", JOptionPane.OK_OPTION);
         } catch (Exception ex) {

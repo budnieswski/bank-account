@@ -18,6 +18,7 @@ public class ClienteDAO {
     private String stmtListar = "SELECT * FROM cliente";
     private String stmtAtualizar = "UPDATE cliente set nome=?, sobrenome=?, rg=?, cpf=?, endereco=?, id_conta=? WHERE id=?";
     private String stmtExcluir = "DELETE FROM cliente WHERE id=?";
+    private String stmtFiltrar = "SELECT * FROM cliente WHERE nome LIKE ? OR sobrenome LIKE ? OR cpf LIKE ? OR rg LIKE ?";
     
     public void adicionar(Cliente cliente) {
         Connection con = null;
@@ -122,6 +123,43 @@ public class ClienteDAO {
             try{stmt.close();}catch(Exception ex){System.out.println("Erro ao fechar stmt. Ex="+ex.getMessage());};
             try{con.close();}catch(Exception ex){System.out.println("Erro ao fechar conexão. Ex="+ex.getMessage());};
         }
-
     }
+    
+    public List<Cliente> filtrar(String filtro) throws SQLException{
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = ConnectionFactory.getConnection();
+            stmt = con.prepareStatement(stmtFiltrar);
+            
+            for (int i = 1; i < 5; i++)
+                stmt.setString(i, "%"+ filtro +"%");
+            
+            rs = stmt.executeQuery();
+            List<Cliente> clientes = new ArrayList();
+            
+            while (rs.next()) {
+                Cliente cliente = new Cliente();                
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setSobrenome(rs.getString("sobrenome"));
+                cliente.setRG(rs.getString("rg"));
+                cliente.setCPF(rs.getString("cpf"));
+                cliente.setEndereco(rs.getString("endereco"));
+                cliente.setIdConta(rs.getInt("id_conta"));
+                
+                clientes.add(cliente);
+            }
+            
+            return clientes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            try{rs.close();}catch(Exception ex){System.out.println("Erro ao fechar result set. Ex="+ex.getMessage());};
+            try{stmt.close();}catch(Exception ex){System.out.println("Erro ao fechar stmt. Ex="+ex.getMessage());};
+            try{con.close();}catch(Exception ex){System.out.println("Erro ao fechar conexão. Ex="+ex.getMessage());};
+        }
+    }    
 }

@@ -97,6 +97,11 @@ public class Inicio extends javax.swing.JFrame {
         });
 
         btnFiltrar.setText("FIltrar");
+        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarActionPerformed(evt);
+            }
+        });
 
         btnCriarConta.setText("Criar Conta");
         btnCriarConta.setEnabled(false);
@@ -241,6 +246,18 @@ public class Inicio extends javax.swing.JFrame {
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnManipularActionPerformed
+
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        try {
+            ClienteDAO dao = new ClienteDAO();
+            if (fieldFiltrar.getText().equals(""))
+                modeloTabela.setListaClientes(dao.listar());
+            else
+                modeloTabela.setListaClientes( dao.filtrar( fieldFiltrar.getText() ) );
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao filtrar. E:"+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnFiltrarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriarConta;
