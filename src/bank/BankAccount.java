@@ -11,9 +11,7 @@ import java.sql.Connection;
 public class BankAccount {
 
     public static void main(String[] args) { 
-        Inicio window = new Inicio();
-        window.setVisible(true);
-        window.listar();
+        new Inicio();
     }
     
 }

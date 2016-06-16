@@ -29,9 +29,13 @@ public class Inicio extends javax.swing.JFrame {
      private int linhaClicada=-1;
     
     public Inicio() {
-        modeloTabela = new ModeloTabelaContatos();
-        initComponents();
+        this.modeloTabela = new ModeloTabelaContatos();
         
+        initComponents();        
+        
+        this.listar();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     /**
@@ -52,6 +56,7 @@ public class Inicio extends javax.swing.JFrame {
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Bank Account");
         setResizable(false);
 
         tabela.setModel(modeloTabela);
@@ -64,6 +69,11 @@ public class Inicio extends javax.swing.JFrame {
 
         btnEditar.setText("Editar");
         btnEditar.setEnabled(false);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
@@ -143,6 +153,15 @@ public class Inicio extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        if(linhaClicada!=-1){
+            Cliente cliente = modeloTabela.getCliente(linhaClicada);
+            ClienteEditar telaEditar = new ClienteEditar(cliente);
+            telaEditar.setVisible(true);
+            dispose();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
