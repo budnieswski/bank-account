@@ -5,6 +5,8 @@
  */
 package bank.swing;
 
+import bank.dao.ContaDAO;
+
 /**
  *
  * @author Guilherme
@@ -41,11 +43,12 @@ public class CriarConta extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Criar Conta");
         setResizable(false);
 
         txtTipo.setText("Tipo:");
 
-        fieldTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Conta Corrente", "Cont Investimento" }));
+        fieldTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Conta Investimento", "Conta Corrente" }));
         fieldTipo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 fieldTipoItemStateChanged(evt);
@@ -54,9 +57,9 @@ public class CriarConta extends javax.swing.JFrame {
 
         txtDepositoInicial.setText("Depósito Inicial:");
 
-        txtComum1.setText("Limite:");
+        txtComum1.setText("Depósito Minimo:");
 
-        txtComum2.setText("Numero:");
+        txtComum2.setText("Montante Minimo");
 
         fieldComum2.setEnabled(false);
 
@@ -141,14 +144,17 @@ public class CriarConta extends javax.swing.JFrame {
 
     private void fieldTipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fieldTipoItemStateChanged
         if (fieldTipo.getSelectedIndex()==0) {
-            txtComum1.setText("Limite:");
-            txtComum2.setText("Numero:");
-            fieldComum2.setEnabled(false);
-        }
-        else if (fieldTipo.getSelectedIndex()==1) {
             txtComum1.setText("Depósito Minimo:");
             txtComum2.setText("Montante Minimo:");
             fieldComum2.setEnabled(true);
+        }
+        else if (fieldTipo.getSelectedIndex()==1) {
+            ContaDAO dao = new ContaDAO();
+            
+            txtComum1.setText("Limite:");
+            txtComum2.setText("Numero:");
+            fieldComum2.setEnabled(false);            
+            fieldComum2.setText( dao.getNextContaId() + "" );
         }
     }//GEN-LAST:event_fieldTipoItemStateChanged
 
