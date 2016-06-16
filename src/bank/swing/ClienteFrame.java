@@ -2,8 +2,11 @@ package bank.swing;
 
 import bank.dao.ClienteDAO;
 import bank.model.Cliente;
+import java.text.ParseException;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -17,17 +20,11 @@ public class ClienteFrame extends javax.swing.JFrame {
      * Creates new form ClienteFrame
      */
     public ClienteFrame() {
-        initComponents();
-        
-        this.setLocationRelativeTo(null);
-        
-        
+        init();
     }
     
     public ClienteFrame(Cliente cliente) {
-        initComponents();
-        
-        this.setLocationRelativeTo(null);
+        init();
         
         if (cliente != null) {
             this.cliente = cliente;
@@ -42,11 +39,26 @@ public class ClienteFrame extends javax.swing.JFrame {
             // Evita criar 2 telas para basicamente a mesma função 'cadast/edit'
             btnSalvar.setText("Atualizar");
             btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAtualizarActionPerformed(evt);
-            }
-        });
-            
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    btnAtualizarActionPerformed(evt);
+                }
+            });
+        }
+    }
+    
+    public void init() {
+        initComponents();
+
+        this.setLocationRelativeTo(null);
+
+        try {
+            MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
+            maskCPF.install(fieldCPF);
+
+            MaskFormatter maskRG = new MaskFormatter("##.###.###-#");
+            maskRG.install(fieldRG);
+        } catch (Exception e) {
+            System.out.printf("Error Formatter: " + e.getMessage());
         }
     }
     
@@ -92,11 +104,11 @@ public class ClienteFrame extends javax.swing.JFrame {
         fieldNome = new javax.swing.JTextField();
         fieldEndereco = new javax.swing.JTextField();
         txtCPF = new javax.swing.JLabel();
-        fieldCPF = new javax.swing.JTextField();
         txtRG = new javax.swing.JLabel();
-        fieldRG = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
+        fieldCPF = new javax.swing.JFormattedTextField();
+        fieldRG = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Editar Cliente");
@@ -146,14 +158,14 @@ public class ClienteFrame extends javax.swing.JFrame {
                             .addComponent(txtCPF))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fieldSobrenome)
+                            .addComponent(fieldSobrenome, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                             .addComponent(fieldEndereco)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(fieldCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(txtRG)
+                                .addComponent(fieldCPF, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fieldRG, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtRG)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldRG, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnFechar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -177,13 +189,12 @@ public class ClienteFrame extends javax.swing.JFrame {
                     .addComponent(fieldEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCPF)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtRG)
                         .addComponent(fieldCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtCPF))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(fieldRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtRG)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fieldRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSalvar)
                     .addComponent(btnFechar))
@@ -240,10 +251,10 @@ public class ClienteFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JTextField fieldCPF;
+    private javax.swing.JFormattedTextField fieldCPF;
     private javax.swing.JTextField fieldEndereco;
     private javax.swing.JTextField fieldNome;
-    private javax.swing.JTextField fieldRG;
+    private javax.swing.JFormattedTextField fieldRG;
     private javax.swing.JTextField fieldSobrenome;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel txtCPF;

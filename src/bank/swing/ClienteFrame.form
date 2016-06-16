@@ -70,14 +70,14 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="fieldSobrenome" max="32767" attributes="0"/>
+                              <Component id="fieldSobrenome" pref="277" max="32767" attributes="0"/>
                               <Component id="fieldEndereco" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="fieldCPF" min="-2" pref="110" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                  <Component id="txtRG" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fieldCPF" pref="114" max="32767" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="fieldRG" min="-2" pref="110" max="-2" attributes="0"/>
+                                  <Component id="txtRG" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="fieldRG" min="-2" pref="114" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -111,16 +111,14 @@
                   </Group>
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="txtCPF" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fieldCPF" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCPF" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fieldRG" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtRG" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldCPF" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldRG" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnSalvar" min="-2" max="-2" attributes="0"/>
                       <Component id="btnFechar" min="-2" max="-2" attributes="0"/>
@@ -157,14 +155,10 @@
             <Property name="text" type="java.lang.String" value="CPF:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="fieldCPF">
-        </Component>
         <Component class="javax.swing.JLabel" name="txtRG">
           <Properties>
             <Property name="text" type="java.lang.String" value="RG:"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="fieldRG">
         </Component>
         <Component class="javax.swing.JButton" name="btnSalvar">
           <Properties>
@@ -181,6 +175,10 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFecharActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="fieldCPF">
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="fieldRG">
         </Component>
       </SubComponents>
     </Container>
