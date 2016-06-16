@@ -11,6 +11,7 @@ public class Cliente {
     private String RG;
     private String CPF;
     private String endereco;
+    private int idConta;
     
     public Cliente() {
         this.id = -1L;
@@ -72,6 +73,13 @@ public class Cliente {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
-    
+
+    public int getIdConta() {
+        return idConta;
+    }
+
+    public void setIdConta(int idConta) {
+        this.idConta = idConta;
+    }
     
 }
