@@ -56,6 +56,7 @@ public class Inicio extends javax.swing.JFrame {
         btnFiltrar = new javax.swing.JButton();
         fieldFiltrar = new javax.swing.JTextField();
         btnCriarConta = new javax.swing.JButton();
+        btnManipular = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -105,6 +106,14 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
+        btnManipular.setText("Manipular");
+        btnManipular.setEnabled(false);
+        btnManipular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManipularActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -119,10 +128,12 @@ public class Inicio extends javax.swing.JFrame {
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
                         .addComponent(btnCriarConta)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnManipular)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInserir)
-                        .addGap(152, 152, 152)
+                        .addGap(159, 159, 159)
                         .addComponent(fieldFiltrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnFiltrar)))
@@ -142,7 +153,8 @@ public class Inicio extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnCriarConta))
+                    .addComponent(btnCriarConta)
+                    .addComponent(btnManipular))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -159,13 +171,23 @@ public class Inicio extends javax.swing.JFrame {
     }
     
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        linhaClicada = tabela.rowAtPoint(evt.getPoint());
+        Cliente cliente = modeloTabela.getCliente(linhaClicada);
+        
         btnEditar.setEnabled(true);
         btnExcluir.setEnabled(true);
         btnCriarConta.setEnabled(true);
-       
-        linhaClicada = tabela.rowAtPoint(evt.getPoint());
-        //Pega o contato da linha clidada
-        Cliente contato = modeloTabela.getCliente(linhaClicada);
+        
+        // So ativa o manipular, se o cliente ja tiver uma conta
+        if( cliente.getIdConta() != 0 ) {
+            btnCriarConta.setText("Editar Conta");
+            btnManipular.setEnabled(true);
+        }
+        else {
+            btnCriarConta.setText("Criar Conta");
+            btnManipular.setEnabled(false);
+        }
+        
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -213,12 +235,20 @@ public class Inicio extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCriarContaActionPerformed
 
+    private void btnManipularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManipularActionPerformed
+        Cliente cliente = modeloTabela.getCliente(linhaClicada);
+        ManipularFrame tela = new ManipularFrame(cliente);
+        tela.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnManipularActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriarConta;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFiltrar;
     private javax.swing.JButton btnInserir;
+    private javax.swing.JButton btnManipular;
     private javax.swing.JTextField fieldFiltrar;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JScrollPane scrollPanel;

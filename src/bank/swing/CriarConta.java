@@ -10,6 +10,8 @@ import bank.model.Cliente;
 import bank.model.Conta;
 import bank.model.ContaCorrente;
 import bank.model.ContaInvestimento;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,6 +30,13 @@ public class CriarConta extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         this.cliente = cliente;
+        
+        this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                new Inicio();
+                dispose();
+            }
+        });
     }
 
     /**

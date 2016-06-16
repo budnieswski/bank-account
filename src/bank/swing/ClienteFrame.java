@@ -2,6 +2,8 @@ package bank.swing;
 
 import bank.dao.ClienteDAO;
 import bank.model.Cliente;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
@@ -60,6 +62,13 @@ public class ClienteFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.printf("Error Formatter: " + e.getMessage());
         }
+        
+        this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                new Inicio();
+                dispose();
+            }
+        });
     }
     
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {                                          

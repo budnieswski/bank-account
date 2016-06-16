@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: mysql04-farm57.uni5.net
--- Tempo de Geração: Jun 16, 2016 as 10:37 AM
+-- Tempo de Geração: Jun 16, 2016 as 12:23 PM
 -- Versão do Servidor: 5.6.24
 -- Versão do PHP: 5.3.28
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
 
 INSERT INTO `cliente` (`id`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco`, `id_conta`) VALUES
 (1, 'Bruno Henrique', 'Woisa', '11.111.111-1', '080.272.809-07', 'Rua das Andorinhas, 1500', NULL),
-(2, 'Guilherme', 'Budnieswski', '063.538.649-65', '012.840.354-00', 'Rua das Flores, 2503', NULL),
+(2, 'Guilherme', 'Budnieswski', '063.538.649-65', '012.840.354-00', 'Rua das Flores, 2503', 5),
 (3, 'Fabiano Sarzi', 'Sartori', '12.945.644-00', '321.963.147-00', 'Rua Javari, 350', NULL),
 (4, 'Vera Lúcia Lerias da', 'Silva', '022.325.AS5-06', '753.951.852-25', 'Rua Lindóia, 94', NULL),
 (5, 'Victor', 'Fernandez', '072.854.9AQ-07', '616.750.161-00', 'Rua União da Vitória, 98', NULL);
@@ -57,22 +57,24 @@ INSERT INTO `cliente` (`id`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco`, `id_c
 CREATE TABLE IF NOT EXISTS `conta` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_tipo` int(10) unsigned NOT NULL,
-  `id_cliente` int(11) NOT NULL,
   `saldo` double DEFAULT NULL,
   `limite` double DEFAULT NULL,
   `montante_minimo` double DEFAULT NULL,
   `deposito_minimo` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_conta_to_conta_tipo_id_idx` (`id_tipo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Extraindo dados da tabela `conta`
 --
 
-INSERT INTO `conta` (`id`, `id_tipo`, `id_cliente`, `saldo`, `limite`, `montante_minimo`, `deposito_minimo`) VALUES
-(1, 1, 2, 100, 3000, 0, 0),
-(2, 2, 5, 3.5, 0, 100, 100);
+INSERT INTO `conta` (`id`, `id_tipo`, `saldo`, `limite`, `montante_minimo`, `deposito_minimo`) VALUES
+(1, 1, 100, 3000, 0, 0),
+(2, 2, 3.5, 0, 100, 100),
+(3, 2, 100, 0, 100, 100),
+(4, 2, 100, 0, 100, 100),
+(5, 2, 100, 0, 100, 100);
 
 -- --------------------------------------------------------
 

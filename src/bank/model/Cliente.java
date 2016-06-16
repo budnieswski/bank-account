@@ -6,6 +6,7 @@ package bank.model;
  */
 public class Cliente {
     private int id;
+    private int idConta;
     private String nome;
     private String sobrenome;
     private String RG;
@@ -21,6 +22,14 @@ public class Cliente {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public int getIdConta() {
+        return idConta;
+    }
+
+    public void setIdConta(int idConta) {
+        this.idConta = idConta;
     }
 
     public String getNome() {

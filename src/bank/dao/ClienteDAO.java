@@ -16,7 +16,7 @@ import java.util.List;
 public class ClienteDAO {
     private String stmtAdicionar = "INSERT INTO cliente (nome,sobrenome,rg,cpf,endereco) values (?,?,?,?,?)";
     private String stmtListar = "SELECT * FROM cliente";
-    private String stmtAtualizar = "UPDATE cliente set nome=?, sobrenome=?, rg=?, cpf=?, endereco=? WHERE id=?";
+    private String stmtAtualizar = "UPDATE cliente set nome=?, sobrenome=?, rg=?, cpf=?, endereco=?, id_conta=? WHERE id=?";
     private String stmtExcluir = "DELETE FROM cliente WHERE id=?";
     
     public void adicionar(Cliente cliente) {
@@ -78,7 +78,8 @@ public class ClienteDAO {
             stmt.setString(3, cliente.getRG());
             stmt.setString(4, cliente.getCPF());
             stmt.setString(5, cliente.getEndereco());
-            stmt.setLong(6, cliente.getId()); // Where
+            stmt.setInt(6, cliente.getIdConta());
+            stmt.setLong(7, cliente.getId()); // Where
             stmt.executeUpdate();
             
         } catch (SQLException e) {
@@ -108,6 +109,7 @@ public class ClienteDAO {
                 cliente.setRG(rs.getString("rg"));
                 cliente.setCPF(rs.getString("cpf"));
                 cliente.setEndereco(rs.getString("endereco"));
+                cliente.setIdConta(rs.getInt("id_conta"));
                 
                 clientes.add(cliente);
             }
