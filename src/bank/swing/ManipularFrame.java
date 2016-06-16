@@ -62,7 +62,7 @@ public class ManipularFrame extends javax.swing.JFrame {
                 
                 this.messageErroDeposito = "";
                 
-                this.messageErroSaque = "Você não pode sacar mais do que seu montante\n\n";
+                this.messageErroSaque = "Saldo insuficiente para saque\n\n";
                 this.messageErroSaque+= "Limite: " + this.parseTxtSaldo(cc.getLimite());
                 this.messageErroSaque+= "\nSaldo: " + this.parseTxtSaldo(cc.getSaldo());
                 this.messageErroSaque+= "\nTotal Disponivel: "+ this.parseTxtSaldo( (cc.getLimite()+cc.getSaldo()) );
@@ -73,10 +73,41 @@ public class ManipularFrame extends javax.swing.JFrame {
                 this.messageErroDeposito = "O valor de deposito deve ser no ";
                 this.messageErroDeposito+= "minimo de "+this.parseTxtSaldo(ci.getDepositoMinimo()) ;
                 
-                this.messageErroSaque = "O valor do saque não pode ser menor ";
+                this.messageErroSaque = "O saldo final não pode ser menor ";
                 this.messageErroSaque+= "que o montante minimo ("+this.parseTxtSaldo(ci.getMontanteMinimo())+")";
             break;
         }
+    }
+    
+    private String parseToString(Double input) {
+        String value = "";
+        
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+               
+        try {
+            value = format.format( input );
+        } catch (Exception e) {
+            System.out.println("Parse error (toString). E: " + e.getMessage());
+        }
+        
+        return value;
+    }
+    
+    private Double parseToDouble(String input) {
+        double value = 0.0;
+        
+        input = input.replace(".", "");
+        input = input.replace(",", ".");
+        
+        NumberFormat format = NumberFormat.getInstance();
+        
+        try {
+            value = format.parse(input.replaceAll("[^\\d]*([\\d,]*).*", "$1")).doubleValue();
+        } catch (Exception e) {
+            System.out.println("Parse error (toDouble). E: " + e.getMessage());
+        }
+        
+        return value;
     }
     
     private String parseTxtSaldo(double valor) {
@@ -162,9 +193,9 @@ public class ManipularFrame extends javax.swing.JFrame {
 
         txtSaldo.setText("0,00");
 
-        fieldValor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                fieldValorKeyReleased(evt);
+        fieldValor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldValorFocusLost(evt);
             }
         });
 
@@ -249,7 +280,7 @@ public class ManipularFrame extends javax.swing.JFrame {
       
         if (fieldAcao.getSelectedIndex()==0) {
             // Sacar
-            double valor = Double.parseDouble(this.fieldValor.getText());
+            double valor = this.parseToDouble(this.fieldValor.getText());
             
             if (valor < 0)
                 JOptionPane.showMessageDialog(null,"Valor de saque não pode ser menor que 0 (zero)", "Erro", JOptionPane.OK_OPTION);
@@ -266,7 +297,9 @@ public class ManipularFrame extends javax.swing.JFrame {
         
         } else if (fieldAcao.getSelectedIndex()==1) {
             // Depositar
-            double valor = Double.parseDouble(this.fieldValor.getText());
+            double valor = this.parseToDouble(this.fieldValor.getText());
+            
+            System.out.println(valor);
             
             if (valor < 0)
                 JOptionPane.showMessageDialog(null,"Valor de saque não pode ser menor que 0 (zero)", "Erro", JOptionPane.OK_OPTION);
@@ -298,10 +331,13 @@ public class ManipularFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, this.montaExtrato(), "Extrato", JOptionPane.NO_OPTION);
     }//GEN-LAST:event_btnExecutarActionPerformed
 
-    private void fieldValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldValorKeyReleased
-        //        int tamanho = this.fieldValor.getText().length();
-        System.out.println(evt.getKeyChar());
-    }//GEN-LAST:event_fieldValorKeyReleased
+    private void fieldValorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldValorFocusLost
+        System.out.println("Antes:" + fieldValor.getText() );
+        
+        Double valor = this.parseToDouble( this.fieldValor.getText() );
+        
+        this.fieldValor.setText( this.parseToString(valor) );
+    }//GEN-LAST:event_fieldValorFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExecutar;
