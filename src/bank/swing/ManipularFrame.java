@@ -8,9 +8,15 @@ package bank.swing;
 import bank.dao.ContaDAO;
 import bank.model.Cliente;
 import bank.model.Conta;
+import bank.model.ContaCorrente;
+import bank.model.ContaInvestimento;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.NumberFormat;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -21,6 +27,8 @@ public class ManipularFrame extends javax.swing.JFrame {
     private Cliente cliente;
     private Conta conta;
     private ContaDAO contaDAO;
+    private String messageErroSaque;
+    private String messageErroDeposito;
 
     /**
      * Creates new form ManipularFrame
@@ -32,8 +40,12 @@ public class ManipularFrame extends javax.swing.JFrame {
         this.cliente = cliente;
         this.contaDAO = new ContaDAO();
         this.conta = this.contaDAO.getConta(cliente);
+        this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
         
-        this.txtSaldo.setText(conta.getSaldo() + "");
+        fieldValor.setHorizontalAlignment(JFormattedTextField.RIGHT);   
+        
+        // Define as messagens de acordo com o tipo de conta
+        this.defineMessages();
         
         this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
@@ -41,6 +53,61 @@ public class ManipularFrame extends javax.swing.JFrame {
                 dispose();
             }
         });
+    }
+    
+    private void defineMessages() {
+        switch (this.conta.getIdTipo()) {
+            case 1:
+                ContaCorrente cc = (ContaCorrente) this.conta;
+                
+                this.messageErroDeposito = "";
+                
+                this.messageErroSaque = "Você não pode sacar mais do que seu montante\n\n";
+                this.messageErroSaque+= "Limite: " + this.parseTxtSaldo(cc.getLimite());
+                this.messageErroSaque+= "\nSaldo: " + this.parseTxtSaldo(cc.getSaldo());
+                this.messageErroSaque+= "\nTotal Disponivel: "+ this.parseTxtSaldo( (cc.getLimite()+cc.getSaldo()) );
+            break;
+            case 2:
+                ContaInvestimento ci = (ContaInvestimento) this.conta;
+                
+                this.messageErroDeposito = "O valor de deposito deve ser no ";
+                this.messageErroDeposito+= "minimo de "+this.parseTxtSaldo(ci.getDepositoMinimo()) ;
+                
+                this.messageErroSaque = "O valor do saque não pode ser menor ";
+                this.messageErroSaque+= "que o montante minimo ("+this.parseTxtSaldo(ci.getMontanteMinimo())+")";
+            break;
+        }
+    }
+    
+    private String parseTxtSaldo(double valor) {
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        
+        return format.format(valor);
+    }
+    
+    private String montaExtrato() {
+        String message = "";
+        
+        String tipoConta = (this.conta.getIdTipo()==2) ? "Conta Investimento" : "Conta Corrente";
+        
+        message += "Nome: " + this.cliente.getNome() + " " + this.cliente.getSobrenome();
+        message += "\nTipo de conta: " + tipoConta;
+        message += "\n\nSaldo: " + parseTxtSaldo(this.conta.getSaldo());
+        
+        switch (this.conta.getIdTipo()) {
+            case 1:
+                ContaCorrente cc = (ContaCorrente) this.conta;
+                message += "\nLimite: " + parseTxtSaldo(cc.getLimite());
+                message += "\nTotal Disponivel: " + parseTxtSaldo( (cc.getLimite()+cc.getSaldo()) );
+            break;
+            case 2:
+                ContaInvestimento ci = (ContaInvestimento) this.conta;
+                message += "\nDepósito minimo: " + parseTxtSaldo(ci.getDepositoMinimo());
+                message += "\nMontante minimo: " + parseTxtSaldo(ci.getMontanteMinimo());
+            break;
+        }
+        
+        return message;
     }
     
     /**
@@ -57,11 +124,11 @@ public class ManipularFrame extends javax.swing.JFrame {
         txtAcao = new javax.swing.JLabel();
         fieldAcao = new javax.swing.JComboBox<>();
         txtValor = new javax.swing.JLabel();
-        fieldValor = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         btnExecutar = new javax.swing.JButton();
         txtViewSaldo = new javax.swing.JLabel();
         txtSaldo = new javax.swing.JLabel();
+        fieldValor = new javax.swing.JFormattedTextField();
 
         setTitle("Manipular");
         setResizable(false);
@@ -75,7 +142,7 @@ public class ManipularFrame extends javax.swing.JFrame {
 
         txtAcao.setText("Açao:");
 
-        fieldAcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sacar", "Depositar", "Aplicar Remuneraçao" }));
+        fieldAcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sacar", "Depositar", "Aplicar Remuneração", "Tirar Extrato" }));
         fieldAcao.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 fieldAcaoItemStateChanged(evt);
@@ -95,29 +162,36 @@ public class ManipularFrame extends javax.swing.JFrame {
 
         txtSaldo.setText("0,00");
 
+        fieldValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fieldValorKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtViewSaldo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtSaldo))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtAcao)
-                        .addGap(18, 18, 18)
-                        .addComponent(fieldAcao, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(btnExecutar)
-                        .addComponent(btnFechar, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(txtValor)
-                            .addGap(18, 18, 18)
-                            .addComponent(fieldValor))
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtAcao)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldAcao, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnFechar)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtValor)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldValor)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -131,9 +205,9 @@ public class ManipularFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtValor)
                     .addComponent(fieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnExecutar)
                 .addGap(11, 11, 11)
+                .addComponent(btnExecutar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -166,25 +240,46 @@ public class ManipularFrame extends javax.swing.JFrame {
     private void fieldAcaoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fieldAcaoItemStateChanged
         fieldValor.setEnabled(true);
         
-        if (fieldAcao.getSelectedIndex()==0) {
-            // Sacar
-        }
-        else if (fieldAcao.getSelectedIndex()==1) {
-            // Depositar
-        }
-        else if (fieldAcao.getSelectedIndex()==2) {
-            // Remuneracao
+        // Remuneracao & Tirar extrato
+        if (fieldAcao.getSelectedIndex()==2 || fieldAcao.getSelectedIndex()==3)
             fieldValor.setEnabled(false);
-        }
     }//GEN-LAST:event_fieldAcaoItemStateChanged
 
     private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecutarActionPerformed
-
+      
         if (fieldAcao.getSelectedIndex()==0) {
             // Sacar
-        }
-        else if (fieldAcao.getSelectedIndex()==1) {
+            double valor = Double.parseDouble(this.fieldValor.getText());
+            
+            if (valor < 0)
+                JOptionPane.showMessageDialog(null,"Valor de saque não pode ser menor que 0 (zero)", "Erro", JOptionPane.OK_OPTION);
+            else {
+                boolean rs = this.conta.saca(valor);
+                if (rs) {
+                    this.contaDAO.atualizar(this.conta);
+                    this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
+
+                    JOptionPane.showMessageDialog(null,"Valor sacado corretamente!", "Sucesso", JOptionPane.OK_OPTION);
+                } else
+                    JOptionPane.showMessageDialog(null, this.messageErroSaque, "Erro", JOptionPane.OK_OPTION);
+            }
+        
+        } else if (fieldAcao.getSelectedIndex()==1) {
             // Depositar
+            double valor = Double.parseDouble(this.fieldValor.getText());
+            
+            if (valor < 0)
+                JOptionPane.showMessageDialog(null,"Valor de saque não pode ser menor que 0 (zero)", "Erro", JOptionPane.OK_OPTION);
+            else {            
+                boolean rs = this.conta.deposita(valor);
+                if (rs) {
+                    this.contaDAO.atualizar(this.conta);
+                    this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
+
+                    JOptionPane.showMessageDialog(null,"Valor depositado corretamente!", "Sucesso", JOptionPane.OK_OPTION);
+                } else
+                    JOptionPane.showMessageDialog(null,this.messageErroDeposito, "Erro", JOptionPane.OK_OPTION);
+            }
         }
         else if (fieldAcao.getSelectedIndex()==2) {
             // Remuneracao
@@ -194,18 +289,25 @@ public class ManipularFrame extends javax.swing.JFrame {
             
             this.conta.remunera();
             this.contaDAO.atualizar(this.conta);
-            this.txtSaldo.setText( this.conta.getSaldo() + "" );
+            this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
             
             System.out.println("Depois: " + this.conta.getSaldo());
             System.out.println("--------------------------");
         }
+        else if (fieldAcao.getSelectedIndex()==3)
+            JOptionPane.showMessageDialog(null, this.montaExtrato(), "Extrato", JOptionPane.NO_OPTION);
     }//GEN-LAST:event_btnExecutarActionPerformed
+
+    private void fieldValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldValorKeyReleased
+        //        int tamanho = this.fieldValor.getText().length();
+        System.out.println(evt.getKeyChar());
+    }//GEN-LAST:event_fieldValorKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExecutar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JComboBox<String> fieldAcao;
-    private javax.swing.JTextField fieldValor;
+    private javax.swing.JFormattedTextField fieldValor;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel txtAcao;
