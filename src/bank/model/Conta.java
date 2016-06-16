@@ -8,7 +8,7 @@ public abstract class Conta implements ContaInterface {
     private Long id;
     private int idTipo;
     private String nomeTipo;
-    private double saldo;
+    protected double saldo;
 
     public Conta(Long id, int idTipo, String nomeTipo, double saldo) {
         this.id = id;
@@ -52,7 +52,24 @@ public abstract class Conta implements ContaInterface {
     
     @Override
     public boolean deposita(double valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(valor > 0){
+            this.saldo += valor;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean saca(double valor) {
+        if(valor > 0){
+            this.saldo -= valor;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override

@@ -22,11 +22,16 @@ public class ContaCorrente extends Conta{
     
     @Override
     public boolean saca(double valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(super.saldo-valor > 0- this.limite){
+            return super.saca(valor);
+        }
+        else{
+            return false;
+        }
     }
     
     @Override
     public void remunera() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        super.saldo += super.saldo*0.01;
     }
 }

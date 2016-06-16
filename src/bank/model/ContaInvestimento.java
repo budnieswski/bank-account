@@ -32,17 +32,27 @@ public class ContaInvestimento extends Conta{
 
     @Override
     public boolean saca(double valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(super.saldo-valor >= this.montanteMinimo){
+            return super.saca(valor);
+        }
+        else{
+            return false;
+        }
     }
     
     @Override
     public void remunera() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        super.saldo += super.saldo*0.02;
     }
     
     @Override
     public boolean deposita(double valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(valor >= this.depositoMinimo){
+            return super.deposita(valor);
+        }
+        else{
+            return false;
+        }
     }
     
     
