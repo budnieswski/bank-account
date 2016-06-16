@@ -2,7 +2,7 @@ package bank.model;
 
 /**
  *
- * @author Guilherme
+ * @author Bruno e Guilherme
  */
 public class ContaInvestimento {
     

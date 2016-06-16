@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author Guilherme
+ * @author Bruno e Guilherme
  */
 public class ClienteDAO {
     private String stmtAdicionar = "INSERT INTO cliente (nome,sobrenome,rg,cpf,endereco) values (?,?,?,?,?)";

@@ -2,7 +2,7 @@ package bank.dao;
 
 /**
  *
- * @author Guilherme
+ * @author Bruno e Guilherme
  */
 public class ContaDAO {
     

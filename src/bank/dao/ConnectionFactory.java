@@ -10,7 +10,7 @@ import java.util.Properties;
 
 /**
  *
- * @author Guilherme
+ * @author Bruno e Guilherme
  */
 public class ConnectionFactory {
     private static Connection con;
