@@ -198,7 +198,10 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        int option = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse cliente?", "Aviso", JOptionPane.YES_NO_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, 
+                "Tem certeza que deseja excluir esse cliente?" +
+                 "\nTodas as contas associadas serão apagadas !!"
+                , "Aviso", JOptionPane.YES_NO_OPTION);
 
         if (option == 0) {
             try {

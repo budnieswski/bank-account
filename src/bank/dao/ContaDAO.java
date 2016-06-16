@@ -65,6 +65,24 @@ public class ContaDAO {
         }
     }
     
+    public void excluir(int id) {
+        Connection con=null;
+        PreparedStatement stmt = null;
+        
+        try {
+            con = ConnectionFactory.getConnection();
+            stmt = con.prepareStatement(stmtExcluir);
+            stmt.setInt(1, id);
+            
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            try{stmt.close();}catch(Exception ex){System.out.println("Erro ao fechar stmt. Ex="+ex.getMessage());};
+            try{con.close();}catch(Exception ex){System.out.println("Erro ao fechar conexão. Ex="+ex.getMessage());};
+        }
+    }
+    
     public void atualizar(Conta conta) {
         Connection con = null;
         PreparedStatement stmt = null;

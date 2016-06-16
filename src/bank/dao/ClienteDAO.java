@@ -57,8 +57,14 @@ public class ClienteDAO {
             con = ConnectionFactory.getConnection();
             stmt = con.prepareStatement(stmtExcluir);
 
-            stmt.setLong(1, cliente.getId());
+            stmt.setInt(1, cliente.getId());
             stmt.executeUpdate();
+            
+            if (cliente.getIdConta() != 0) {
+                ContaDAO conta = new ContaDAO();
+                conta.excluir(cliente.getIdConta());
+            }
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally{
