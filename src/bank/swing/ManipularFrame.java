@@ -8,8 +8,6 @@ import bank.model.ContaInvestimento;
 import bank.model.FormatMoney;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.NumberFormat;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 
 /**

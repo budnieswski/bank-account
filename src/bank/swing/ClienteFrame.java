@@ -4,10 +4,7 @@ import bank.dao.ClienteDAO;
 import bank.model.Cliente;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.ParseException;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 /**

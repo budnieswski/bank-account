@@ -1,8 +1,6 @@
 package bank;
 
-import bank.dao.ConnectionFactory;
 import bank.swing.Inicio;
-import java.sql.Connection;
 
 /**
  *

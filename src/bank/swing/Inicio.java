@@ -1,25 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package bank.swing;
 
 import bank.dao.ClienteDAO;
 import bank.model.Cliente;
 import bank.model.TabelaClientes;
-import java.awt.event.KeyEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author Rafael
+ * @author Guilherme
  */
 public class Inicio extends javax.swing.JFrame {
 

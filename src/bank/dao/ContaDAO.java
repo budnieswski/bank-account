@@ -4,7 +4,6 @@ import bank.model.Cliente;
 import bank.model.Conta;
 import bank.model.ContaCorrente;
 import bank.model.ContaInvestimento;
-import com.mysql.jdbc.JDBC4PreparedStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -8,7 +8,7 @@ import java.util.Properties;
 
 /**
  *
- * @author Bruno e Guilherme
+ * @author Guilherme
  */
 public class ConnectionFactory {
     private static Connection con;
