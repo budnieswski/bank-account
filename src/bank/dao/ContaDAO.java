@@ -112,8 +112,6 @@ public class ContaDAO {
                     stmt.setDouble(5, ci.getDepositoMinimo()); // Dep. Minimo
                 break;
             }
-            
-            System.out.println(((JDBC4PreparedStatement)stmt).asSql());
                         
             stmt.executeUpdate();            
         } catch (SQLException e) {

@@ -35,6 +35,10 @@ public class ContaFrame extends javax.swing.JFrame {
         if (this.cliente.getIdConta() != 0) {
             this.conta = this.contaDAO.getConta(cliente);
             
+            // Deixa definido o tipo da conta
+            if (this.conta.getIdTipo()==1)
+                this.fieldTipo.setSelectedIndex(1);
+            
             this.viewCheckConta( this.conta.getIdTipo() );
        }
         
@@ -81,7 +85,7 @@ public class ContaFrame extends javax.swing.JFrame {
             switch (this.conta.getIdTipo()) {
                 case 1:
                     ContaCorrente CC = (ContaCorrente) this.conta;
-
+                    
                     this.fieldComum1.setText( FormatMoney.toString(CC.getLimite()) );
                 break;
                 case 2:
@@ -96,6 +100,7 @@ public class ContaFrame extends javax.swing.JFrame {
                 this.fieldComum2.setText( this.conta.getId() + "" );
         }
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
