@@ -21,7 +21,7 @@ public class ConnectionFactory {
                 
         try {
             Properties prop = new Properties();
-            String propFileName = System.getProperty("user.dir")+"/resources/config.properties";
+            String propFileName = System.getProperty("user.dir")+"/resource/config.properties";
             
             FileInputStream inputStream = new FileInputStream(propFileName);
                         

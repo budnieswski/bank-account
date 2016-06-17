@@ -5,6 +5,7 @@ import bank.model.Cliente;
 import bank.model.TabelaClientes;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,6 +24,7 @@ public class Inicio extends javax.swing.JFrame {
         this.tabelaClientes = new TabelaClientes();
         
         initComponents();        
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir")+"/resource/icon.png").getImage());
         
         this.listar();
         this.setLocationRelativeTo(null);
