@@ -20,7 +20,6 @@ public class ContaFrame extends javax.swing.JFrame {
     
     private Cliente cliente;
     private Conta conta = null;
-    private Conta tempConta = null;
     private ContaDAO contaDAO;
 
     /**
@@ -36,6 +35,8 @@ public class ContaFrame extends javax.swing.JFrame {
         
         if (this.cliente.getIdConta() != 0) {
             this.conta = this.contaDAO.getConta(cliente);
+            
+            this.setTitle("Editar Conta");
             
             // Deixa definido o tipo da conta
             if (this.conta.getIdTipo()==1)

@@ -28,6 +28,8 @@ public class ClienteFrame extends javax.swing.JFrame {
         
         if (cliente != null) {
             this.cliente = cliente;
+            
+            this.setTitle("Editar Cliente");
                 
             fieldNome.setText( cliente.getNome() );
             fieldSobrenome.setText(cliente.getSobrenome());
@@ -116,7 +118,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         fieldRG = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Editar Cliente");
+        setTitle("Cadastrar Cliente");
         setResizable(false);
 
         txtNome.setText("Nome:");
