@@ -4,6 +4,7 @@ import bank.model.Cliente;
 import bank.model.Conta;
 import bank.model.ContaCorrente;
 import bank.model.ContaInvestimento;
+import com.mysql.jdbc.JDBC4PreparedStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,7 +94,7 @@ public class ContaDAO {
             
             stmt.setInt(1, conta.getIdTipo());
             stmt.setDouble(2, conta.getSaldo());
-            stmt.setDouble(6, conta.getId());
+            stmt.setInt(6, conta.getId());
             
             switch(conta.getIdTipo()) {
                 case 1:
@@ -111,6 +112,8 @@ public class ContaDAO {
                     stmt.setDouble(5, ci.getDepositoMinimo()); // Dep. Minimo
                 break;
             }
+            
+            System.out.println(((JDBC4PreparedStatement)stmt).asSql());
                         
             stmt.executeUpdate();            
         } catch (SQLException e) {

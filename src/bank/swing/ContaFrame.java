@@ -10,7 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 /**
  *
@@ -77,27 +76,24 @@ public class ContaFrame extends javax.swing.JFrame {
         
         if (this.conta != null) {        
             this.fieldDepositoInicial.setEnabled(false);
+            this.fieldDepositoInicial.setText( FormatMoney.toString(this.conta.getSaldo()) );
             
-            this.fieldTipo.setSelectedIndex(1);
+            switch (this.conta.getIdTipo()) {
+                case 1:
+                    ContaCorrente CC = (ContaCorrente) this.conta;
+
+                    this.fieldComum1.setText( FormatMoney.toString(CC.getLimite()) );
+                break;
+                case 2:
+                    ContaInvestimento CI = (ContaInvestimento) this.conta;
+
+                    this.fieldComum1.setText( FormatMoney.toString(CI.getDepositoMinimo()) );
+                    this.fieldComum2.setText( FormatMoney.toString(CI.getMontanteMinimo()) );                    
+                break;
+            }
             
-//            switch (tipo) {
-//                case 1:
-//                    // Conta Corrente
-//                    ContaCorrente CC = (ContaCorrente) this.conta;
-//                    
-//                    //this.fieldTipo.setSelectedIndex(1);
-//                    this.fieldComum1.setText(CC.getLimite() + "");         
-//                    this.fieldComum2.setText( this.conta.getId() + "" );
-//                break;
-//                case 2:      
-//                    // Conta Investimento
-//                    ContaInvestimento CI = (ContaInvestimento) this.conta;
-//                    
-//                    //this.fieldTipo.setSelectedIndex(0);
-//                    this.fieldComum1.setText( CI.getDepositoMinimo() + "");
-//                    this.fieldComum2.setText( CI.getMontanteMinimo() + "");                    
-//                break;
-//            }
+            if (tipo==1)
+                this.fieldComum2.setText( this.conta.getId() + "" );
         }
     }
     /**
@@ -246,13 +242,10 @@ public class ContaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldTipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fieldTipoItemStateChanged
-        if (fieldTipo.getSelectedIndex()==0) {
-            //viewChangeContaInvestimento();
+        if (fieldTipo.getSelectedIndex()==0)
             viewCheckConta(2);
-        }
         else if (fieldTipo.getSelectedIndex()==1)    
             viewCheckConta(1);
-            //viewChangeContaCorrente();
         
         
     }//GEN-LAST:event_fieldTipoItemStateChanged
@@ -263,41 +256,44 @@ public class ContaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-   
-        int idNumero = this.contaDAO.getNextContaId(); // Mesma valor se for pegar do field
-        
-        // Conta do cliente já existe
-        if (this.conta != null)
-            idNumero = this.conta.getId();
-        
+        Conta novaConta = null;
         try {            
             switch (fieldTipo.getSelectedIndex()) {
                 case 0:
-                    conta = new ContaInvestimento(
-                        Double.parseDouble(fieldComum2.getText()), // Montante
-                        Double.parseDouble(fieldComum1.getText()), // Deposito Min
+                    novaConta = new ContaInvestimento(
+                        FormatMoney.toDouble(fieldComum2.getText()), // Montante
+                        FormatMoney.toDouble(fieldComum1.getText()), // Deposito Min
                         this.cliente,
-                        idNumero, // id/numero
+                        0, // id/numero
                         2, // idTipo
-                        Double.parseDouble(fieldDepositoInicial.getText()) // Saldo
+                        FormatMoney.toDouble(fieldDepositoInicial.getText()) // Saldo
                     );
                 break;
                 case 1:
-                    conta = new ContaCorrente(
-                        Double.parseDouble(fieldComum1.getText()), // Limite
+                    novaConta = new ContaCorrente(
+                        FormatMoney.toDouble(fieldComum1.getText()), // Limite
                         this.cliente,
-                        idNumero, // id/numero
+                        0, // id/numero
                         1, // idTipo
-                        Double.parseDouble(fieldDepositoInicial.getText()) // Saldo
+                        FormatMoney.toDouble(fieldDepositoInicial.getText()) // Saldo
                     );                    
                 break;
             }
             
-            this.contaDAO.adicionar(conta);
-            
-            JOptionPane.showMessageDialog(null,"Conta criada!", "Sucesso", JOptionPane.OK_OPTION);
+            // Conta do cliente já existe
+            if (this.conta != null) {
+                novaConta.setId( this.conta.getId() );
+                this.contaDAO.atualizar(novaConta);
+                
+                JOptionPane.showMessageDialog(null,"Conta atualizada!", "Sucesso", JOptionPane.OK_OPTION);
+            } else {
+                novaConta.setId( this.contaDAO.getNextContaId() );
+                this.contaDAO.adicionar(novaConta);
+                
+                JOptionPane.showMessageDialog(null,"Conta criada!", "Sucesso", JOptionPane.OK_OPTION);
+            }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,"Erro ao criar conta no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Erro ao manipular conta. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

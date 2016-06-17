@@ -24,6 +24,9 @@ public class FormatMoney {
     public static Double toDouble(String input) {
         double value = 0.0;
         
+        if (input.equals(""))
+            input = "0,00";
+        
         input = input.replace(".", "");
         input = input.replace(",", ".");
         
