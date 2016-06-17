@@ -290,12 +290,12 @@ public class ContaFrame extends javax.swing.JFrame {
                 novaConta.setId( this.conta.getId() );
                 this.contaDAO.atualizar(novaConta);
                 
-                JOptionPane.showMessageDialog(null,"Conta atualizada!", "Sucesso", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(null,"Conta atualizada!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 novaConta.setId( this.contaDAO.getNextContaId() );
                 this.contaDAO.adicionar(novaConta);
                 
-                JOptionPane.showMessageDialog(null,"Conta criada!", "Sucesso", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(null,"Conta criada!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Erro ao manipular conta. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

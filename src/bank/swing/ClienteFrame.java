@@ -74,22 +74,18 @@ public class ClienteFrame extends javax.swing.JFrame {
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {                                          
         ClienteDAO dao = null;
         
-        System.out.println("Antes: "+ cliente.getNome());
-        
         // Atualizando os dados no objeto
         this.cliente.setNome(fieldNome.getText());
         this.cliente.setSobrenome(fieldSobrenome.getText() );
         this.cliente.setEndereco(fieldEndereco.getText() );
         this.cliente.setCPF(fieldCPF.getText() );
         this.cliente.setRG(fieldRG.getText() );
-        
-        System.out.println("Depois: "+ cliente.getNome());
-        
+                
         // Atualizando com o banco
         try {
             dao = new ClienteDAO();
             dao.atualizar(this.cliente);
-            JOptionPane.showMessageDialog(null,"Cliente atualizado !", "Sucesso", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null,"Cliente atualizado !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Erro ao atualizar no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -244,7 +240,7 @@ public class ClienteFrame extends javax.swing.JFrame {
             try {
                 dao = new ClienteDAO();
                 dao.adicionar(cliente);
-                JOptionPane.showMessageDialog(null,"Cliente cadastrado !", "Sucesso", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(null,"Cliente cadastrado !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null,"Erro ao atualizar no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }

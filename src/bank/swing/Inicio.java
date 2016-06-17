@@ -9,6 +9,7 @@ package bank.swing;
 import bank.dao.ClienteDAO;
 import bank.model.Cliente;
 import bank.model.TabelaClientes;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +40,36 @@ public class Inicio extends javax.swing.JFrame {
         
         this.tabela.setAutoCreateRowSorter(true);
     }
-
+    
+    private void actionFiltrar() {
+        try {
+            ClienteDAO dao = new ClienteDAO();
+            if (fieldFiltrar.getText().equals(""))
+                tabelaClientes.setListaClientes(dao.listar());
+            else
+                tabelaClientes.setListaClientes( dao.filtrar( fieldFiltrar.getText() ) );
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao filtrar. E:"+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void actionEditar() {
+        if(linhaClicada!=-1){
+            Cliente cliente = tabelaClientes.getCliente(linhaClicada);
+            ClienteFrame telaEditar = new ClienteFrame(cliente);
+            telaEditar.setVisible(true);
+            dispose();
+        }
+    }
+    
+    public void listar() {
+        try {
+            ClienteDAO dao = new ClienteDAO();
+            tabelaClientes.setListaClientes(dao.listar());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao conectar com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,6 +99,9 @@ public class Inicio extends javax.swing.JFrame {
 
         tabela.setModel(tabelaClientes);
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tabelaMousePressed(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
             }
@@ -102,6 +135,12 @@ public class Inicio extends javax.swing.JFrame {
         btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFiltrarActionPerformed(evt);
+            }
+        });
+
+        fieldFiltrar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fieldFiltrarKeyPressed(evt);
             }
         });
 
@@ -167,16 +206,7 @@ public class Inicio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    public void listar() {
-        try {
-            ClienteDAO dao = new ClienteDAO();
-            tabelaClientes.setListaClientes(dao.listar());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,"Erro ao conectar com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
+   
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         linhaClicada = tabela.rowAtPoint(evt.getPoint());
         Cliente cliente = tabelaClientes.getCliente(linhaClicada);
@@ -224,12 +254,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if(linhaClicada!=-1){
-            Cliente cliente = tabelaClientes.getCliente(linhaClicada);
-            ClienteFrame telaEditar = new ClienteFrame(cliente);
-            telaEditar.setVisible(true);
-            dispose();
-        }
+        this.actionEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
@@ -253,16 +278,19 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnManipularActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        try {
-            ClienteDAO dao = new ClienteDAO();
-            if (fieldFiltrar.getText().equals(""))
-                tabelaClientes.setListaClientes(dao.listar());
-            else
-                tabelaClientes.setListaClientes( dao.filtrar( fieldFiltrar.getText() ) );
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,"Erro ao filtrar. E:"+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+        this.actionFiltrar();
     }//GEN-LAST:event_btnFiltrarActionPerformed
+
+    private void fieldFiltrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldFiltrarKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER)
+            this.actionFiltrar();
+    }//GEN-LAST:event_fieldFiltrarKeyPressed
+
+    private void tabelaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMousePressed
+        if (evt.getClickCount() == 2) {
+            this.actionEditar();
+        }
+    }//GEN-LAST:event_tabelaMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriarConta;

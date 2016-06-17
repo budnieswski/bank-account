@@ -246,7 +246,7 @@ public class ManipularFrame extends javax.swing.JFrame {
                     this.contaDAO.atualizar(this.conta);
                     this.txtSaldo.setText( FormatMoney.toString(this.conta.getSaldo()) );
 
-                    JOptionPane.showMessageDialog(null,"Valor sacado corretamente!", "Sucesso", JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(null,"Valor sacado corretamente!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } else
                     JOptionPane.showMessageDialog(null, this.messageErroSaque, "Erro", JOptionPane.OK_OPTION);
             }
@@ -265,7 +265,7 @@ public class ManipularFrame extends javax.swing.JFrame {
                     this.contaDAO.atualizar(this.conta);
                     this.txtSaldo.setText( FormatMoney.toString(this.conta.getSaldo()) );
 
-                    JOptionPane.showMessageDialog(null,"Valor depositado corretamente!", "Sucesso", JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(null,"Valor depositado corretamente!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } else
                     JOptionPane.showMessageDialog(null,this.messageErroDeposito, "Erro", JOptionPane.OK_OPTION);
             }
