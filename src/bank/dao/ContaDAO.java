@@ -134,7 +134,6 @@ public class ContaDAO {
             ResultSet rs = stmt.executeQuery();
             
             if ( rs.next() ) {
-                System.out.println("Dentro do if");
                 switch (rs.getInt("id_tipo")) {
                     case 1:
                         // Conta Corrente

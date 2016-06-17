@@ -5,9 +5,12 @@ import bank.model.Cliente;
 import bank.model.Conta;
 import bank.model.ContaCorrente;
 import bank.model.ContaInvestimento;
+import bank.model.FormatMoney;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -49,6 +52,7 @@ public class ContaFrame extends javax.swing.JFrame {
         txtComum1.setText("Limite:");
         txtComum2.setText("Numero:");
         fieldComum2.setEnabled(false); 
+        fieldComum2.setHorizontalAlignment( JTextField.CENTER );
         fieldComum2.setText( this.contaDAO.getNextContaId() + "" );
     }
     
@@ -57,6 +61,7 @@ public class ContaFrame extends javax.swing.JFrame {
         txtComum1.setText("Depósito Minimo:");
         txtComum2.setText("Montante Minimo:");
         fieldComum2.setEnabled(true);
+        fieldComum2.setHorizontalAlignment( JTextField.RIGHT );
         fieldComum2.setText("");
     }
 
@@ -131,9 +136,30 @@ public class ContaFrame extends javax.swing.JFrame {
 
         txtDepositoInicial.setText("Depósito Inicial:");
 
+        fieldDepositoInicial.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fieldDepositoInicial.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldDepositoInicialFocusLost(evt);
+            }
+        });
+
         txtComum1.setText("Depósito Minimo:");
 
         txtComum2.setText("Montante Minimo");
+
+        fieldComum1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fieldComum1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldComum1FocusLost(evt);
+            }
+        });
+
+        fieldComum2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fieldComum2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldComum2FocusLost(evt);
+            }
+        });
 
         btnFechar.setText("Fechar");
         btnFechar.addActionListener(new java.awt.event.ActionListener() {
@@ -273,8 +299,25 @@ public class ContaFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Erro ao criar conta no banco de dados. E="+ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void fieldDepositoInicialFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldDepositoInicialFocusLost
+        Double valor = FormatMoney.toDouble(this.fieldDepositoInicial.getText() );
+        
+        this.fieldDepositoInicial.setText( FormatMoney.toString(valor) );
+    }//GEN-LAST:event_fieldDepositoInicialFocusLost
+
+    private void fieldComum1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldComum1FocusLost
+        Double valor = FormatMoney.toDouble(this.fieldComum1.getText() );
+        
+        this.fieldComum1.setText( FormatMoney.toString(valor) );
+    }//GEN-LAST:event_fieldComum1FocusLost
+
+    private void fieldComum2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldComum2FocusLost
+        Double valor = FormatMoney.toDouble(this.fieldComum2.getText() );
+        
+        this.fieldComum2.setText( FormatMoney.toString(valor) );
+    }//GEN-LAST:event_fieldComum2FocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;

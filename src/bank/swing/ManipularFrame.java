@@ -35,9 +35,7 @@ public class ManipularFrame extends javax.swing.JFrame {
         this.contaDAO = new ContaDAO();        
         this.conta = this.contaDAO.getConta(cliente);
         this.txtSaldo.setText( FormatMoney.toString(this.conta.getSaldo()) );
-        
-        fieldValor.setHorizontalAlignment(JFormattedTextField.RIGHT);   
-        
+                
         // Define as messagens de acordo com o tipo de conta
         this.defineMessages();
         
@@ -150,6 +148,7 @@ public class ManipularFrame extends javax.swing.JFrame {
 
         txtSaldo.setText("0,00");
 
+        fieldValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         fieldValor.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 fieldValorFocusLost(evt);
@@ -289,8 +288,6 @@ public class ManipularFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExecutarActionPerformed
 
     private void fieldValorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldValorFocusLost
-        System.out.println("Antes:" + fieldValor.getText() );
-        
         Double valor = FormatMoney.toDouble(this.fieldValor.getText() );
         
         this.fieldValor.setText( FormatMoney.toString(valor) );

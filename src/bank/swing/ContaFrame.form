@@ -132,6 +132,12 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldDepositoInicial">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+          </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="fieldDepositoInicialFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtComum1">
           <Properties>
@@ -144,8 +150,20 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldComum1">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+          </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="fieldComum1FocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldComum2">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+          </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="fieldComum2FocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnFechar">
           <Properties>
