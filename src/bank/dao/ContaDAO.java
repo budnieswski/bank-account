@@ -130,10 +130,11 @@ public class ContaDAO {
             con = ConnectionFactory.getConnection();
             stmt = con.prepareStatement(stmtGetConta, Statement.RETURN_GENERATED_KEYS);            
             stmt.setInt(1, cliente.getId());
-            
+                        
             ResultSet rs = stmt.executeQuery();
             
             if ( rs.next() ) {
+                System.out.println("Dentro do if");
                 switch (rs.getInt("id_tipo")) {
                     case 1:
                         // Conta Corrente
@@ -170,20 +171,17 @@ public class ContaDAO {
     }
 
     public int getNextContaId() {
-        int id;
+        int id = 1;
         Connection con = null;
         PreparedStatement stmt = null;
         
         try {
             con = ConnectionFactory.getConnection();
-            stmt = con.prepareStatement("SELECT id FROM conta ORDER BY id DESC LIMIT 0, 1");
+            stmt = con.prepareStatement("SHOW TABLE STATUS FROM `"+ConnectionFactory.db+"` LIKE 'conta' ");
             ResultSet rs = stmt.executeQuery();
             
             if ( rs.next() )
-                id = Integer.parseInt(rs.getString("id"));
-            else
-                id = 0;
-            
+                id = Integer.parseInt(rs.getString("Auto_increment"));            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally{
@@ -191,6 +189,6 @@ public class ContaDAO {
             try{con.close();}catch(Exception ex){System.out.println("Erro ao fechar conexão. Ex="+ex.getMessage());};
         }
         
-        return ++id;
+        return id;
     }
 }

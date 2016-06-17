@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bank.swing;
 
 import bank.dao.ContaDAO;
@@ -10,13 +5,12 @@ import bank.model.Cliente;
 import bank.model.Conta;
 import bank.model.ContaCorrente;
 import bank.model.ContaInvestimento;
+import bank.model.FormatMoney;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -38,9 +32,9 @@ public class ManipularFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         this.cliente = cliente;
-        this.contaDAO = new ContaDAO();
+        this.contaDAO = new ContaDAO();        
         this.conta = this.contaDAO.getConta(cliente);
-        this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
+        this.txtSaldo.setText( FormatMoney.toString(this.conta.getSaldo()) );
         
         fieldValor.setHorizontalAlignment(JFormattedTextField.RIGHT);   
         
@@ -63,57 +57,20 @@ public class ManipularFrame extends javax.swing.JFrame {
                 this.messageErroDeposito = "";
                 
                 this.messageErroSaque = "Saldo insuficiente para saque\n\n";
-                this.messageErroSaque+= "Limite: " + this.parseTxtSaldo(cc.getLimite());
-                this.messageErroSaque+= "\nSaldo: " + this.parseTxtSaldo(cc.getSaldo());
-                this.messageErroSaque+= "\nTotal Disponivel: "+ this.parseTxtSaldo( (cc.getLimite()+cc.getSaldo()) );
+                this.messageErroSaque+= "Limite: " + FormatMoney.toString(cc.getLimite());
+                this.messageErroSaque+= "\nSaldo: " + FormatMoney.toString(cc.getSaldo());
+                this.messageErroSaque+= "\nTotal Disponivel: "+ FormatMoney.toString( (cc.getLimite()+cc.getSaldo()) );
             break;
             case 2:
                 ContaInvestimento ci = (ContaInvestimento) this.conta;
                 
                 this.messageErroDeposito = "O valor de deposito deve ser no ";
-                this.messageErroDeposito+= "minimo de "+this.parseTxtSaldo(ci.getDepositoMinimo()) ;
+                this.messageErroDeposito+= "minimo de "+FormatMoney.toString(ci.getDepositoMinimo()) ;
                 
                 this.messageErroSaque = "O saldo final não pode ser menor ";
-                this.messageErroSaque+= "que o montante minimo ("+this.parseTxtSaldo(ci.getMontanteMinimo())+")";
+                this.messageErroSaque+= "que o montante minimo ("+FormatMoney.toString(ci.getMontanteMinimo())+")";
             break;
         }
-    }
-    
-    private String parseToString(Double input) {
-        String value = "";
-        
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-               
-        try {
-            value = format.format( input );
-        } catch (Exception e) {
-            System.out.println("Parse error (toString). E: " + e.getMessage());
-        }
-        
-        return value;
-    }
-    
-    private Double parseToDouble(String input) {
-        double value = 0.0;
-        
-        input = input.replace(".", "");
-        input = input.replace(",", ".");
-        
-        NumberFormat format = NumberFormat.getInstance();
-        
-        try {
-            value = format.parse(input.replaceAll("[^\\d]*([\\d,]*).*", "$1")).doubleValue();
-        } catch (Exception e) {
-            System.out.println("Parse error (toDouble). E: " + e.getMessage());
-        }
-        
-        return value;
-    }
-    
-    private String parseTxtSaldo(double valor) {
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        
-        return format.format(valor);
     }
     
     private String montaExtrato() {
@@ -123,18 +80,18 @@ public class ManipularFrame extends javax.swing.JFrame {
         
         message += "Nome: " + this.cliente.getNome() + " " + this.cliente.getSobrenome();
         message += "\nTipo de conta: " + tipoConta;
-        message += "\n\nSaldo: " + parseTxtSaldo(this.conta.getSaldo());
+        message += "\n\nSaldo: " + FormatMoney.toString(this.conta.getSaldo());
         
         switch (this.conta.getIdTipo()) {
             case 1:
                 ContaCorrente cc = (ContaCorrente) this.conta;
-                message += "\nLimite: " + parseTxtSaldo(cc.getLimite());
-                message += "\nTotal Disponivel: " + parseTxtSaldo( (cc.getLimite()+cc.getSaldo()) );
+                message += "\nLimite: " + FormatMoney.toString(cc.getLimite());
+                message += "\nTotal Disponivel: " + FormatMoney.toString( (cc.getLimite()+cc.getSaldo()) );
             break;
             case 2:
                 ContaInvestimento ci = (ContaInvestimento) this.conta;
-                message += "\nDepósito minimo: " + parseTxtSaldo(ci.getDepositoMinimo());
-                message += "\nMontante minimo: " + parseTxtSaldo(ci.getMontanteMinimo());
+                message += "\nDepósito minimo: " + FormatMoney.toString(ci.getDepositoMinimo());
+                message += "\nMontante minimo: " + FormatMoney.toString(ci.getMontanteMinimo());
             break;
         }
         
@@ -280,7 +237,7 @@ public class ManipularFrame extends javax.swing.JFrame {
       
         if (fieldAcao.getSelectedIndex()==0) {
             // Sacar
-            double valor = this.parseToDouble(this.fieldValor.getText());
+            double valor = FormatMoney.toDouble(this.fieldValor.getText());
             
             if (valor < 0)
                 JOptionPane.showMessageDialog(null,"Valor de saque não pode ser menor que 0 (zero)", "Erro", JOptionPane.OK_OPTION);
@@ -288,7 +245,7 @@ public class ManipularFrame extends javax.swing.JFrame {
                 boolean rs = this.conta.saca(valor);
                 if (rs) {
                     this.contaDAO.atualizar(this.conta);
-                    this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
+                    this.txtSaldo.setText( FormatMoney.toString(this.conta.getSaldo()) );
 
                     JOptionPane.showMessageDialog(null,"Valor sacado corretamente!", "Sucesso", JOptionPane.OK_OPTION);
                 } else
@@ -297,7 +254,7 @@ public class ManipularFrame extends javax.swing.JFrame {
         
         } else if (fieldAcao.getSelectedIndex()==1) {
             // Depositar
-            double valor = this.parseToDouble(this.fieldValor.getText());
+            double valor = FormatMoney.toDouble(this.fieldValor.getText());
             
             System.out.println(valor);
             
@@ -307,7 +264,7 @@ public class ManipularFrame extends javax.swing.JFrame {
                 boolean rs = this.conta.deposita(valor);
                 if (rs) {
                     this.contaDAO.atualizar(this.conta);
-                    this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
+                    this.txtSaldo.setText( FormatMoney.toString(this.conta.getSaldo()) );
 
                     JOptionPane.showMessageDialog(null,"Valor depositado corretamente!", "Sucesso", JOptionPane.OK_OPTION);
                 } else
@@ -322,7 +279,7 @@ public class ManipularFrame extends javax.swing.JFrame {
             
             this.conta.remunera();
             this.contaDAO.atualizar(this.conta);
-            this.txtSaldo.setText( parseTxtSaldo(this.conta.getSaldo()) );
+            this.txtSaldo.setText( FormatMoney.toString(this.conta.getSaldo()) );
             
             System.out.println("Depois: " + this.conta.getSaldo());
             System.out.println("--------------------------");
@@ -334,9 +291,9 @@ public class ManipularFrame extends javax.swing.JFrame {
     private void fieldValorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldValorFocusLost
         System.out.println("Antes:" + fieldValor.getText() );
         
-        Double valor = this.parseToDouble( this.fieldValor.getText() );
+        Double valor = FormatMoney.toDouble(this.fieldValor.getText() );
         
-        this.fieldValor.setText( this.parseToString(valor) );
+        this.fieldValor.setText( FormatMoney.toString(valor) );
     }//GEN-LAST:event_fieldValorFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

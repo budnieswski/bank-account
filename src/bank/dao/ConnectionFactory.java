@@ -2,10 +2,8 @@ package bank.dao;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -14,6 +12,10 @@ import java.util.Properties;
  */
 public class ConnectionFactory {
     private static Connection con;
+    public static String user;
+    public static String pass;
+    public static String host;
+    public static String db;
     
     public static Connection getConnection() {
                 
@@ -29,12 +31,17 @@ public class ConnectionFactory {
                 throw new FileNotFoundException("Property file '" + propFileName + "' not found in the classpath");
             }
             
-            String url = "jdbc:mysql://"+prop.getProperty("host");
-                   url+= "/"+prop.getProperty("db");
+            ConnectionFactory.user = prop.getProperty("user");
+            ConnectionFactory.pass = prop.getProperty("pass");
+            ConnectionFactory.host = prop.getProperty("host");
+            ConnectionFactory.db = prop.getProperty("db");
+            
+            String url = "jdbc:mysql://"+ConnectionFactory.host;
+                   url+= "/"+ConnectionFactory.db;
             
             con = DriverManager.getConnection(url,
-                    prop.getProperty("user"),
-                    prop.getProperty("pass"));
+                    ConnectionFactory.user,
+                    ConnectionFactory.pass);
             
             return con;
  
