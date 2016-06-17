@@ -4,6 +4,7 @@ import bank.dao.ClienteDAO;
 import bank.model.Cliente;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -49,6 +50,8 @@ public class ClienteFrame extends javax.swing.JFrame {
         initComponents();
 
         this.setLocationRelativeTo(null);
+        
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir")+"/resource/icon.png").getImage());
 
         try {
             MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");

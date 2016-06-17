@@ -8,6 +8,7 @@ import bank.model.ContaInvestimento;
 import bank.model.FormatMoney;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -28,6 +29,7 @@ public class ContaFrame extends javax.swing.JFrame {
     public ContaFrame(Cliente cliente) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir")+"/resource/icon.png").getImage());
         
         this.cliente = cliente;
         this.contaDAO = new ContaDAO();

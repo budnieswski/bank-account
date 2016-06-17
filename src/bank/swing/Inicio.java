@@ -25,11 +25,10 @@ public class Inicio extends javax.swing.JFrame {
         
         initComponents();        
         this.setIconImage(new ImageIcon(System.getProperty("user.dir")+"/resource/icon.png").getImage());
-        
-        this.listar();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         
+        this.listar();
         this.tabela.setAutoCreateRowSorter(true);
     }
     
