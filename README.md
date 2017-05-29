@@ -17,7 +17,7 @@ Wooddy Wooddy!
  	- chkconfig redis on
  	- rm -rf /etc/nginx/conf.d/default.conf
  	- vim /etc/nginx/conf.d/default.conf
- 	- [Paste this code](#nginx-server-conf).
+ 	- [Paste this code](#nginx-defaultconf).
  	- ESC :wq
  	- CTRL+Shift+D (2x)
  - vagrant reload
